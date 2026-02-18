@@ -1,17 +1,24 @@
 const mysql = require("mysql2");
+require("dotenv").config();
 
 const db = mysql.createConnection({
-  host: "127.0.0.1", 
-  host: "localhost",
-  user: "root",
-  password: "",   // ✅ Keep empty for XAMPP
-  database: "skillsync",
-   port: 3307 
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+
+  ssl: {
+    rejectUnauthorized: false   // IMPORTANT
+  }
 });
 
-db.connect(err => {
-  if (err) console.log(err);
-  else console.log("MySQL Connected");
+db.connect((err) => {
+  if (err) {
+    console.error("❌ MySQL Connection Failed:", err);
+  } else {
+    console.log("✅ MySQL Connected Successfully");
+  }
 });
 
 module.exports = db;
